@@ -7,17 +7,15 @@ DATABASE_URL = "mysql+pymysql://root:GassyPenguin16@localhost:3306/inventory_man
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-def add_user(name, last, email, role_name):
+def get_roles(session):
+    """Retrieve all roles from the database."""
+    return session.query(Role).all()
+
+def add_user(name, last, email, role_id):
     session = SessionLocal()
     try:
-        # Get the role object
-        role = session.query(Role).filter_by(role=role_name).first()
-        if not role:
-            print(f"Role '{role_name}' does not exist.")
-            return
-
         # Create a new user
-        new_user = User(name=name, last=last, email=email, role_id=role.id)
+        new_user = User(name=name, last=last, email=email, role_id=role_id)
         session.add(new_user)
         session.commit()
         print(f"User {name} {last} added successfully.")
@@ -28,8 +26,31 @@ def add_user(name, last, email, role_name):
         session.close()
 
 if __name__ == "__main__":
+    session = SessionLocal()
+    
+    # Fetch roles from the database
+    roles = get_roles(session)
+    
+    # Display roles to the user
+    print("Available roles:")
+    for idx, role in enumerate(roles):
+        print(f"{idx + 1}. {role.role}")
+    
+    # Prompt user for details
     name = input("Enter first name: ")
     last = input("Enter last name: ")
     email = input("Enter email: ")
-    role_name = input("Enter role (Manager, Sales, Customer): ")
-    add_user(name, last, email, role_name)
+
+    while True:
+        try:
+            role_index = int(input("Select role by number: ")) - 1
+            if role_index < 0 or role_index >= len(roles):
+                raise IndexError
+            selected_role = roles[role_index]
+            break
+        except (ValueError, IndexError):
+            print("Invalid selection. Please select a valid role number.")
+    
+    # Add the user with the selected role
+    add_user(name, last, email, selected_role.id)
+    session.close()

@@ -1,4 +1,4 @@
-from sqlalchemy import Date, Float, ForeignKey, create_engine, Column, Integer, String
+from sqlalchemy import Date, create_engine, Column, Integer, String, Float, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 
@@ -64,10 +64,14 @@ Base.metadata.create_all(bind=engine)
 
 # Seed script
 def seed_roles(session):
-    roles = ["Manager", "Sales", "Customer"]
-    for role_name in roles:
-        role = Role(role=role_name)
-        session.add(role)
+    existing_roles = session.query(Role).all()
+    existing_role_names = {role.role for role in existing_roles}
+    roles_to_add = ["Manager", "Sales", "Customer"]
+    
+    for role_name in roles_to_add:
+        if role_name not in existing_role_names:
+            role = Role(role=role_name)
+            session.add(role)
     session.commit()
 
 # Seed roles
