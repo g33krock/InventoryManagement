@@ -14,11 +14,13 @@ I brought attention to my friends my project requirements and we decided we want
 This semester I have been studying Python and MYSQL and really wanted to write a program that integrates the two of them.
 This is the product we have achieved but plan to continue to expand upon for potential use in a production state.
 
-First in the route directory create a file called .env
+First in MYSQL create a database named inventory_management
+CREATE DATABASE inventory_management;
+
+In the route directory create a file called .env
 in the document write MYSQL_PASSWORD="string that is your MYSQL password"
 This is so that your password is secure and not in the main document
 
-First in MYSQL
 Run models.py
 This will create a MYSQL database. 
 From there, the program will pull from other python files to have the user enter information into the inventory_management database.
