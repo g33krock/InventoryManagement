@@ -1,3 +1,13 @@
+"""
+Author: Collin Maassen
+
+Course: CSE 111
+
+Professor Lindstrom
+
+Date: 06/05/2024
+
+"""
 CSE 111 Proposal for a Student Chosen Program
 
     (This is a proposal. All proposals are written with our best
@@ -11,27 +21,29 @@ CSE 111 Proposal for a Student Chosen Program
 
 1. What is the title of your program?
 
-biz.py
+main.py
 
 2. What real-world problem will your program address or help to solve?
 
-This program will pull customer information from a csv file dictionary. Using the dictionary pull product information which then will give us prices. The program will then take the information and compute totals for customers rentals. Then the program will print a receipt giving the customers totals. Adding a discount for those that rent 3+ items. Have a code that allows for employees to access client list, printing the list into the command window.
+This program will take user inputs and file them into a database using MYSQL. The program will then have the data
+returned to the user as a receipt.
 
 3. What will you learn from developing this program?
 
-This will help me continue to learn how the integration of all aspects I have learned merge into one code. Allowing to continue practicing my skills as a developer. 
+This will help me continue to learn how the integration of all aspects of what I have learned, merged into one code. Allowing to continue practicing my skills as a developer. 
 
 4. What Python modules will your program use?
 
-datetime, csv, txt
+datetime, pandas, sqlalchemy, pytest
 
     (Some examples are: csv, datetime, functools, matplotlib, math,
     pandas, pytest, random, requests, and tkinter.)
 
 5. List the names of functions you will need?
 
-read_dict()
 main()
+add_inventory()
+add_user()
 apply_discount()
 
 

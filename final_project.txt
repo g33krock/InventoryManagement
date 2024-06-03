@@ -1,5 +1,5 @@
 """
-Author: Collin Maassen
+Author: Collin Maassen, with assistance from my friends Dallas Lovell and Will Baird
 
 Course: CSE 111
 
@@ -9,11 +9,28 @@ Date: 06/05/2024
 
 """
 
-This file is to explain how this program works. 
-First you will run models.py
+This file is to explain how this program works.
+I brought attention to my friends my project requirements and we decided we wanted to go above and beyond.
+This semester I have been studying Python and MYSQL and really wanted to write a program that integrates the two of them.
+This is the product we have achieved but plan to continue to expand upon for potential use in a production state.
+
+First in the route directory create a file called .env
+in the document write MYSQL_PASSWORD="string that is your MYSQL password"
+This is so that your password is secure and not in the main document
+
+First in MYSQL
+Run models.py
 This will create a MYSQL database. 
 From there, the program will pull from other python files to have the user enter information into the inventory_management database.
+
+In order for the program to execute a transaction entry, you must have these requirements met:
+1. Have a customer
+2. Have an employee (Sales or Manager)
+3. Have products in inventory
+
+
 
 Requirements:
 pymysql
 sqlalchemy
+python-dotenv

@@ -1,5 +1,5 @@
 """
-Author: Collin Maassen
+Author: Collin Maassen, with assistance from my friends Dallas Lovell and Will Baird
 
 Course: CSE 111
 
