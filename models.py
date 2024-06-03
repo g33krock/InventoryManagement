@@ -1,8 +1,7 @@
 import os
 from dotenv import load_dotenv # type: ignore
-from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey, Date
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey, Date, text
+from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 
 load_dotenv()
 
@@ -67,18 +66,61 @@ class ItemizedTransaction(Base):
 Base.metadata.create_all(bind=engine)
 
 # Seed script
+def clear_data(session):
+    # Clear all data from the tables
+    session.query(ItemizedTransaction).delete()
+    session.query(Transaction).delete()
+    session.query(Inventory).delete()
+    session.query(User).delete()
+    session.query(Role).delete()
+    session.commit()
+
+    # Reset auto-increment counters
+    session.execute(text('ALTER TABLE itemized_transactions AUTO_INCREMENT = 1'))
+    session.execute(text('ALTER TABLE transactions AUTO_INCREMENT = 1'))
+    session.execute(text('ALTER TABLE inventory AUTO_INCREMENT = 1'))
+    session.execute(text('ALTER TABLE users AUTO_INCREMENT = 1'))
+    session.execute(text('ALTER TABLE roles AUTO_INCREMENT = 1'))
+    session.commit()
+
 def seed_roles(session):
-    existing_roles = session.query(Role).all()
-    existing_role_names = {role.role for role in existing_roles}
     roles_to_add = ["Manager", "Sales", "Customer"]
     
     for role_name in roles_to_add:
-        if role_name not in existing_role_names:
-            role = Role(role=role_name)
-            session.add(role)
+        role = Role(role=role_name)
+        session.add(role)
     session.commit()
 
-# Seed roles
+def seed_users(session):
+    users_to_add = [
+        {"name": "Alice", "last": "Smith", "email": "alice@example.com", "role_name": "Manager"},
+        {"name": "Bob", "last": "Johnson", "email": "bob@example.com", "role_name": "Sales"},
+        {"name": "Sharon", "last": "Kline", "email": "sharon@example.com", "role_name": "Sales"},
+        {"name": "Charlie", "last": "Lee", "email": "charlie@example.com", "role_name": "Customer"},
+        {"name": "Abby", "last": "Deer", "email": "abby@example.com", "role_name": "Customer"},
+        {"name": "Jorje", "last": "Rodriguez", "email": "jorje@example.com", "role_name": "Customer"}
+    ]
+    for user in users_to_add:
+        role = session.query(Role).filter_by(role=user["role_name"]).first()
+        new_user = User(name=user["name"], last=user["last"], email=user["email"], role_id=role.id)
+        session.add(new_user)
+    session.commit()
+
+def seed_inventory(session):
+    inventory_to_add = [
+        {"name": "Single Tube", "price": 10.0, "rental": 2.0, "description": "River tube for a single rider"},
+        {"name": "Double Tube", "price": 20.0, "rental": 3.0, "description": "River tube for 2 riders"},
+        {"name": "Double Cooler Tube", "price": 30.0, "rental": 4.0, "description": "River tube for 2 rides with an embedded cooler"}
+    ]
+    for item in inventory_to_add:
+        new_item = Inventory(name=item["name"], price=item["price"], rental=item["rental"], description=item["description"])
+        session.add(new_item)
+    session.commit()
+
+# Clear existing data and seed new data
 session = SessionLocal()
+clear_data(session)
 seed_roles(session)
+seed_users(session)
+seed_inventory(session)
 session.close()
