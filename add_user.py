@@ -11,9 +11,11 @@ Date: 06/05/2024
 
 from models import User, Role
 
+
 def get_roles(session):
     """Retrieve all roles from the database."""
     return session.query(Role).all()
+
 
 def add_user(session):
     name = input("Enter first name: ")

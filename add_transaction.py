@@ -1,6 +1,15 @@
 from models import Transaction, ItemizedTransaction
 
-def add_transaction(customer_id, employee_id, inventory_items, transaction_date, rental_date, return_date, session):
+
+def add_transaction(
+    customer_id,
+    employee_id,
+    inventory_items,
+    transaction_date,
+    rental_date,
+    return_date,
+    session,
+):
     try:
         # Create a new transaction
         new_transaction = Transaction(
@@ -8,7 +17,7 @@ def add_transaction(customer_id, employee_id, inventory_items, transaction_date,
             employee_id=employee_id,
             transaction_date=transaction_date,
             rental_date=rental_date,
-            return_date=return_date
+            return_date=return_date,
         )
         session.add(new_transaction)
         session.flush()  # Ensure new_transaction.id is available
@@ -17,8 +26,7 @@ def add_transaction(customer_id, employee_id, inventory_items, transaction_date,
         for item_id, quantity in inventory_items:
             for _ in range(quantity):  # Add multiple entries based on quantity
                 itemized_transaction = ItemizedTransaction(
-                    transaction_id=new_transaction.id,
-                    inventory_id=item_id
+                    transaction_id=new_transaction.id, inventory_id=item_id
                 )
                 session.add(itemized_transaction)
 
