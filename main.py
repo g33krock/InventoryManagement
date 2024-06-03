@@ -9,13 +9,17 @@ Date: 06/05/2024
 
 """
 
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from add_user import add_user
 from add_inventory import add_inventory_item
 from add_transaction import add_transaction
+from dotenv import load_dotenv # type: ignore
 
-DATABASE_URL = "mysql+pymysql://root:GassyPenguin16@localhost:3306/inventory_management"
+load_dotenv()
+
+DATABASE_URL = f"mysql+pymysql://root:{os.getenv('MYSQL_PASSWORD')}@localhost:3306/inventory_management"
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

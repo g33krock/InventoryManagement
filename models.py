@@ -1,19 +1,12 @@
-"""
-Author: Collin Maassen
-
-Course: CSE 111
-
-Professor Lindstrom
-
-Date: 06/05/2024
-
-"""
-
+import os
+from dotenv import load_dotenv # type: ignore
 from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey, Date
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 
-DATABASE_URL = "mysql+pymysql://root:GassyPenguin16@localhost:3306/inventory_management"
+load_dotenv()
+
+DATABASE_URL = f"mysql+pymysql://root:{os.getenv('MYSQL_PASSWORD')}@localhost:3306/inventory_management"
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
