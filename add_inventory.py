@@ -11,6 +11,7 @@ Date: 06/05/2024
 
 from models import Inventory
 
+
 def add_inventory_item(session):
     name = input("Enter item name: ")
     price = float(input("Enter item price: "))
@@ -18,7 +19,9 @@ def add_inventory_item(session):
     description = input("Enter item description: ")
 
     try:
-        new_item = Inventory(name=name, price=price, rental=rental, description=description)
+        new_item = Inventory(
+            name=name, price=price, rental=rental, description=description
+        )
         session.add(new_item)
         session.commit()
         print(f"Inventory item '{name}' added successfully.")

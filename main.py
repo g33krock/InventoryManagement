@@ -15,7 +15,7 @@ from sqlalchemy.orm import sessionmaker
 from add_user import add_user
 from add_inventory import add_inventory_item
 from add_transaction import add_transaction
-from dotenv import load_dotenv # type: ignore
+from dotenv import load_dotenv  # type: ignore
 
 load_dotenv()
 
@@ -23,6 +23,7 @@ DATABASE_URL = f"mysql+pymysql://root:{os.getenv('MYSQL_PASSWORD')}@localhost:33
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
 
 def main():
     session = SessionLocal()
@@ -50,13 +51,18 @@ def main():
 
     session.close()
 
+
 def add_transaction_interface(session):
     from datetime import datetime
     from models import User, Inventory
 
     # Select customers and employees for selection
-    customers = session.query(User).filter_by(role_id=3).all()  # role_id 3 is for Customers
-    employees = session.query(User).filter(User.role_id != 3).all()  # other role_ids are for employees
+    customers = (
+        session.query(User).filter_by(role_id=3).all()
+    )  # role_id 3 is for Customers
+    employees = (
+        session.query(User).filter(User.role_id != 3).all()
+    )  # other role_ids are for employees
 
     # Display customers
     print("Available customers:")
@@ -94,15 +100,19 @@ def add_transaction_interface(session):
     inventory_items = session.query(Inventory).all()
     print("Available inventory items:")
     for idx, item in enumerate(inventory_items):
-        print(f"{idx + 1}. {item.name} (ID: {item.id}) - Price: {item.price}, Rental: {item.rental}")
+        print(
+            f"{idx + 1}. {item.name} (ID: {item.id}) - Price: {item.price}, Rental: {item.rental}"
+        )
 
     # Select inventory items with quantities
     selected_items = []
     while True:
         try:
-            item_entries = input("Enter inventory item numbers and quantities (comma separated, e.g., 1:2,2:1): ").split(',')
+            item_entries = input(
+                "Enter inventory item numbers and quantities (comma separated, e.g., 1:2,2:1): "
+            ).split(",")
             for entry in item_entries:
-                item_index, quantity = entry.split(':')
+                item_index, quantity = entry.split(":")
                 item_index = int(item_index.strip()) - 1
                 quantity = int(quantity.strip())
                 if item_index < 0 or item_index >= len(inventory_items):
@@ -110,12 +120,20 @@ def add_transaction_interface(session):
                 selected_items.append((inventory_items[item_index].id, quantity))
             break
         except (ValueError, IndexError):
-            print("Invalid selection. Please enter valid inventory item numbers and quantities.")
+            print(
+                "Invalid selection. Please enter valid inventory item numbers and quantities."
+            )
 
     # Input transaction dates
-    transaction_date = datetime.strptime(input("Enter transaction date (YYYY-MM-DD): "), "%Y-%m-%d").date()
-    rental_date = datetime.strptime(input("Enter rental date (YYYY-MM-DD): "), "%Y-%m-%d").date()
-    return_date = datetime.strptime(input("Enter return date (YYYY-MM-DD): "), "%Y-%m-%d").date()
+    transaction_date = datetime.strptime(
+        input("Enter transaction date (YYYY-MM-DD): "), "%Y-%m-%d"
+    ).date()
+    rental_date = datetime.strptime(
+        input("Enter rental date (YYYY-MM-DD): "), "%Y-%m-%d"
+    ).date()
+    return_date = datetime.strptime(
+        input("Enter return date (YYYY-MM-DD): "), "%Y-%m-%d"
+    ).date()
 
     # Add transaction
     add_transaction(
@@ -125,7 +143,7 @@ def add_transaction_interface(session):
         transaction_date=transaction_date,
         rental_date=rental_date,
         return_date=return_date,
-        session=session
+        session=session,
     )
 
 
