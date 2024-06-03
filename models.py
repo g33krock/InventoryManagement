@@ -1,3 +1,13 @@
+"""
+Author: Collin Maassen, with assistance from my friends Dallas Lovell and Will Baird
+
+Course: CSE 111
+
+Professor Lindstrom
+
+Date: 06/05/2024
+
+"""
 import os
 from dotenv import load_dotenv # type: ignore
 from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey, Date, text
