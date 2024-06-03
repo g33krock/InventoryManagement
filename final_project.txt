@@ -1,0 +1,15 @@
+"""
+Author: Collin Maassen
+
+Course: CSE 111
+
+Professor Lindstrom
+
+Date: 06/05/2024
+
+"""
+
+This file is to explain how this program works. 
+First you will run models.py
+This will create a MYSQL database. 
+From there, the program will pull from other python files to have the user enter information into the inventory_management database.

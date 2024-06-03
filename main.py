@@ -1,3 +1,14 @@
+"""
+Author: Collin Maassen
+
+Course: CSE 111
+
+Professor Lindstrom
+
+Date: 06/05/2024
+
+"""
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from add_user import add_user
@@ -39,9 +50,9 @@ def add_transaction_interface(session):
     from datetime import datetime
     from models import User, Inventory
 
-    # Fetch customers and employees for selection
-    customers = session.query(User).filter_by(role_id=3).all()  # Assuming role_id 3 is for Customers
-    employees = session.query(User).filter(User.role_id != 3).all()  # Assuming other role_ids are for employees
+    # Select customers and employees for selection
+    customers = session.query(User).filter_by(role_id=3).all()  # role_id 3 is for Customers
+    employees = session.query(User).filter(User.role_id != 3).all()  # other role_ids are for employees
 
     # Display customers
     print("Available customers:")
@@ -112,6 +123,7 @@ def add_transaction_interface(session):
         return_date=return_date,
         session=session
     )
+
 
 if __name__ == "__main__":
     main()

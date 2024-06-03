@@ -1,3 +1,14 @@
+"""
+Author: Collin Maassen
+
+Course: CSE 111
+
+Professor Lindstrom
+
+Date: 06/05/2024
+
+"""
+
 from sqlalchemy import create_engine, Column, Integer, String, Float, ForeignKey, Date
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
