@@ -124,6 +124,3 @@ dmypy.json
 
 # Ignore .idea (PyCharm)
 .idea/
-
-*.pyc
-
