@@ -44,7 +44,7 @@ datetime, pandas, sqlalchemy, pytest
 main()
 add_inventory()
 add_user()
-apply_discount()
+
 
 
     (Remember that the most reusable functions don't get user input and
@@ -59,4 +59,7 @@ apply_discount()
     to have parameters and return a result.)
 
 6. List the names of the test functions you will write.
+
+test_add_inventory()
+test_add_user()
 
