@@ -1,4 +1,4 @@
-from models import Transaction, ItemizedTransaction
+from inventory_management.src.logic.models import Transaction, ItemizedTransaction
 
 
 def add_transaction(

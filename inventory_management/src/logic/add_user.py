@@ -9,7 +9,7 @@ Date: 06/05/2024
 
 """
 
-from models import User, Role
+from inventory_management.src.logic.models import User, Role
 
 
 def get_roles(session):

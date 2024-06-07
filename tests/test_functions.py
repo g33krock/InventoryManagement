@@ -1,10 +1,17 @@
 import pytest
 from unittest.mock import patch
-from add_user import add_user
-from add_inventory import add_inventory_item
-from add_transaction import add_transaction
-from models import Role, User, Inventory, Transaction, ItemizedTransaction
+from inventory_management.src.logic.add_user import add_user
+from inventory_management.src.logic.add_inventory import add_inventory_item
+from inventory_management.src.logic.add_transaction import add_transaction
+from inventory_management.src.logic.models import (
+    Role,
+    User,
+    Inventory,
+    Transaction,
+    ItemizedTransaction,
+)
 from datetime import datetime
+
 
 def test_add_user(test_session, monkeypatch):
     # Seed roles
@@ -14,9 +21,9 @@ def test_add_user(test_session, monkeypatch):
     test_session.commit()
 
     # Mock input for add_user function
-    user_inputs = iter(['Alice', 'Smith', 'alice@example.com', '1'])
+    user_inputs = iter(["Alice", "Smith", "alice@example.com", "1"])
 
-    monkeypatch.setattr('builtins.input', lambda _: next(user_inputs))
+    monkeypatch.setattr("builtins.input", lambda _: next(user_inputs))
     add_user(test_session)
 
     # Verify user was added
@@ -27,11 +34,12 @@ def test_add_user(test_session, monkeypatch):
     assert user.email == "alice@example.com"
     assert user.role.role == "Manager"
 
+
 def test_add_inventory_item(test_session, monkeypatch):
     # Mock input for add_inventory_item function
-    user_inputs = iter(['Single Tube', '10.0', '2.0', 'River tube for a single rider'])
+    user_inputs = iter(["Single Tube", "10.0", "2.0", "River tube for a single rider"])
 
-    monkeypatch.setattr('builtins.input', lambda _: next(user_inputs))
+    monkeypatch.setattr("builtins.input", lambda _: next(user_inputs))
     add_inventory_item(test_session)
 
     # Verify inventory item was added
@@ -42,6 +50,7 @@ def test_add_inventory_item(test_session, monkeypatch):
     assert item.rental == 2.0
     assert item.description == "River tube for a single rider"
 
+
 def test_add_transaction(test_session):
     # Seed roles and users
     roles = ["Manager", "Sales", "Customer"]
@@ -50,23 +59,55 @@ def test_add_transaction(test_session):
     test_session.commit()
 
     users = [
-        {"name": "Alice", "last": "Smith", "email": "alice@example.com", "role_name": "Manager"},
-        {"name": "Bob", "last": "Johnson", "email": "bob@example.com", "role_name": "Sales"},
-        {"name": "Charlie", "last": "Lee", "email": "charlie@example.com", "role_name": "Customer"}
+        {
+            "name": "Alice",
+            "last": "Smith",
+            "email": "alice@example.com",
+            "role_name": "Manager",
+        },
+        {
+            "name": "Bob",
+            "last": "Johnson",
+            "email": "bob@example.com",
+            "role_name": "Sales",
+        },
+        {
+            "name": "Charlie",
+            "last": "Lee",
+            "email": "charlie@example.com",
+            "role_name": "Customer",
+        },
     ]
     for user in users:
         role = test_session.query(Role).filter_by(role=user["role_name"]).first()
-        new_user = User(name=user["name"], last=user["last"], email=user["email"], role_id=role.id)
+        new_user = User(
+            name=user["name"], last=user["last"], email=user["email"], role_id=role.id
+        )
         test_session.add(new_user)
     test_session.commit()
 
     # Seed inventory items
     inventory_to_add = [
-        {"name": "Single Tube", "price": 10.0, "rental": 2.0, "description": "River tube for a single rider"},
-        {"name": "Double Tube", "price": 20.0, "rental": 3.0, "description": "River tube for 2 riders"}
+        {
+            "name": "Single Tube",
+            "price": 10.0,
+            "rental": 2.0,
+            "description": "River tube for a single rider",
+        },
+        {
+            "name": "Double Tube",
+            "price": 20.0,
+            "rental": 3.0,
+            "description": "River tube for 2 riders",
+        },
     ]
     for item in inventory_to_add:
-        new_item = Inventory(name=item["name"], price=item["price"], rental=item["rental"], description=item["description"])
+        new_item = Inventory(
+            name=item["name"],
+            price=item["price"],
+            rental=item["rental"],
+            description=item["description"],
+        )
         test_session.add(new_item)
     test_session.commit()
 
@@ -78,7 +119,15 @@ def test_add_transaction(test_session):
     rental_date = datetime.strptime("2023-05-02", "%Y-%m-%d").date()
     return_date = datetime.strptime("2023-05-03", "%Y-%m-%d").date()
 
-    add_transaction(customer.id, employee.id, inventory_items, transaction_date, rental_date, return_date, test_session)
+    add_transaction(
+        customer.id,
+        employee.id,
+        inventory_items,
+        transaction_date,
+        rental_date,
+        return_date,
+        test_session,
+    )
 
     # Verify transaction was added
     transaction = test_session.query(Transaction).first()

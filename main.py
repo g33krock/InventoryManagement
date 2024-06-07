@@ -12,9 +12,9 @@ Date: 06/05/2024
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from add_user import add_user
-from add_inventory import add_inventory_item
-from add_transaction import add_transaction
+from inventory_management.src.logic.add_user import add_user
+from inventory_management.src.logic.add_inventory import add_inventory_item
+from inventory_management.src.logic.add_transaction import add_transaction
 from dotenv import load_dotenv  # type: ignore
 
 load_dotenv()
@@ -54,7 +54,7 @@ def main():
 
 def add_transaction_interface(session):
     from datetime import datetime
-    from models import User, Inventory
+    from inventory_management.src.logic.models import User, Inventory
 
     # Select customers and employees for selection
     customers = (

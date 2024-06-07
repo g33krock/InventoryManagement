@@ -9,7 +9,7 @@ Date: 06/05/2024
 
 """
 
-from models import Inventory
+from inventory_management.src.logic.models import Inventory
 
 
 def add_inventory_item(session):
